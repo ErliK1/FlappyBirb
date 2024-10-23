@@ -85,10 +85,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
     Date startTimeReward;
 
-
-
-
-
     public GamePanel() {
         this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         setFocusable(true);
@@ -114,12 +110,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
         catch (Exception e) {
             System.out.println(e);
         }
-
-
-
-
-
-
     }
 
     public void startGameThread() {
@@ -204,6 +194,13 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
         }
     }
 
+    public void playLosingSound() {
+        if (clip != null) {
+            clip.start();
+            Image img = new ImageIcon(this.getClass().getResource("../images/loser.jpeg")).getImage();
+        }
+    }
+
     private ArrayList<Column> calculateColumnsPosition() {
         ArrayList<Column> columnsToBeAdded = new ArrayList<>();
         int randomPipeY = (int) (pipeY - pipeHeight/4 - Math.random()*(pipeHeight/2));
@@ -223,6 +220,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
         addColumnsToHashMap();
         for(Column column1: columns) {
             if (collision(bird, column1)) {
+                playLosingSound();
                 gameOver = true;
             }
             else if(xCollision(bird, column1) && !hashMap.get(column1)) {
